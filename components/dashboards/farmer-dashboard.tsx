@@ -7,10 +7,10 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { useAuth } from "@/lib/auth"
-import { useLanguage } from "@/lib/language"
-import { RoleBasedNav } from "@/components/navigation/role-based-nav"
-import { LanguageSwitcher } from "@/components/language/language-switcher"
+import { useAuth } from "../../lib/auth"
+import { useLanguage } from "../../lib/language"
+import { RoleBasedNav } from "../navigation/role-based-nav"
+import { LanguageSwitcher } from "../language/language-switcher"
 import {
   Upload,
   Mic,
@@ -29,6 +29,7 @@ import {
 } from "lucide-react"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import ModelViewer from "../ModelViewer" // Import the new ModelViewer component
 
 // Mock data for charts
 const amuData = [
@@ -153,13 +154,9 @@ export function FarmerDashboard() {
                   <CardTitle>{translate("3D Animal Model - Cow #A001")}</CardTitle>
                   <CardDescription>{translate("Interactive digital twin of your livestock")}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="h-64 bg-gradient-to-br from-amber-50 to-orange-100 rounded-lg flex items-center justify-center border-2 border-dashed border-amber-200">
-                    <div className="text-center">
-                      <div className="text-6xl mb-2">🐄</div>
-                      <p className="text-muted-foreground">3D Model Integration</p>
-                      <p className="text-sm text-muted-foreground">Click and drag to rotate</p>
-                    </div>
+                <CardContent className="px-0 pb-0">
+                  <div className="h-[500px] w-full">
+                    <ModelViewer modelUrl="/cow.glb" />
                   </div>
                 </CardContent>
               </Card>
@@ -209,7 +206,7 @@ export function FarmerDashboard() {
                               </p>
                             </div>
                             <div className="flex items-center gap-2">
-                              {entry.vetApproved && <Shield className="h-3 w-3 text-green-600" title="Vet Approved" />}
+                              {entry.vetApproved && <Shield className="h-3 w-3 text-green-600" />}
                               <Badge variant="secondary" className={getStatusBadge(entry.status)}>
                                 {entry.status.charAt(0).toUpperCase() + entry.status.slice(1)}
                               </Badge>
@@ -793,3 +790,4 @@ export function FarmerDashboard() {
     </div>
   )
 }
+
