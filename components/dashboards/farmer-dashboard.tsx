@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { useAuth } from "../../lib/auth"
@@ -26,6 +33,7 @@ import {
   Video,
   Shield,
   Flag,
+  Image as ImageIcon,
 } from "lucide-react"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -97,6 +105,7 @@ export function FarmerDashboard() {
   const [consultationType, setConsultationType] = useState<"text" | "voice" | "image">("text")
   const [showMediaUpload, setShowMediaUpload] = useState(false)
   const [selectedEntry, setSelectedEntry] = useState<number | null>(null)
+  const [animalType, setAnimalType] = useState<string | null>(null)
 
   const handleConsultationSubmit = () => {
     // Mock AI response
@@ -245,6 +254,103 @@ export function FarmerDashboard() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Digital Twin Data Input Section */}
+            <Card className="lg:col-span-3">
+              <CardHeader>
+                <CardTitle>{translate("Digital Twin Data Input")}</CardTitle>
+                <CardDescription>
+                  {translate("Provide data for your animal's digital twin")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="animal-type">{translate("Animal Type")}</Label>
+                  <Select onValueChange={setAnimalType}>
+                    <SelectTrigger id="animal-type">
+                      <SelectValue placeholder={translate("Select animal type")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cow">{translate("Cow")}</SelectItem>
+                      <SelectItem value="buffalo">{translate("Buffalo")}</SelectItem>
+                      <SelectItem value="goat">{translate("Goat")}</SelectItem>
+                      <SelectItem value="sheep">{translate("Sheep")}</SelectItem>
+                      <SelectItem value="fish">{translate("Fish")}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {animalType === "cow" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="cow-species">{translate("Cow Species")}</Label>
+                    <Select>
+                      <SelectTrigger id="cow-species">
+                        <SelectValue placeholder={translate("Select cow species")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="holstein-friesian">{translate("Holstein Friesian")}</SelectItem>
+                        <SelectItem value="jersey">{translate("Jersey")}</SelectItem>
+                        <SelectItem value="sahiwal">{translate("Sahiwal")}</SelectItem>
+                        <SelectItem value="gir">{translate("Gir")}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="health">{translate("Health Status")}</Label>
+                  <Select>
+                    <SelectTrigger id="health">
+                      <SelectValue placeholder={translate("Select health status")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="healthy">{translate("Healthy")}</SelectItem>
+                      <SelectItem value="sick">{translate("Sick")}</SelectItem>
+                      <SelectItem value="recovering">{translate("Recovering")}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="skin-type">{translate("Skin Type")}</Label>
+                  <Select>
+                    <SelectTrigger id="skin-type">
+                      <SelectValue placeholder={translate("Select skin type")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="normal">{translate("Normal")}</SelectItem>
+                      <SelectItem value="dry">{translate("Dry")}</SelectItem>
+                      <SelectItem value="oily">{translate("Oily")}</SelectItem>
+                      <SelectItem value="lesions">{translate("Lesions")}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="temperature">{translate("Body Temperature (°C)")}</Label>
+                  <Select>
+                    <SelectTrigger id="temperature">
+                      <SelectValue placeholder={translate("Select temperature")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[...Array(11).keys()].map(i => {
+                        const temp = (35 + i * 0.5).toFixed(1);
+                        return <SelectItem key={temp} value={temp}>{temp}</SelectItem>
+                      })}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                    <div className="space-y-2">
+                    <Label htmlFor="animal-image">{translate("Animal Image")}</Label>
+                    <Button variant="outline" className="w-full flex justify-start items-center gap-2">
+                      <ImageIcon className="h-4 w-4" />
+                      {translate("Upload Image")}
+                    </Button>
+                  </div>
+                  <Button className="w-full">{translate("Submit Data")}</Button>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* MRL Monitoring */}
             <Card>
@@ -790,4 +896,3 @@ export function FarmerDashboard() {
     </div>
   )
 }
-
